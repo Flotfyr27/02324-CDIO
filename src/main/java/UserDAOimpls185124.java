@@ -24,9 +24,8 @@ public class UserDAOimpls185124 implements IUserDAO {
     @Override
     public UserDTO getUser(int userId) throws DALException {
         try {
-            String query = "SELECT *" +
-                    "FROM cdio1_users " +
-                    "LEFT JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
+            String query = "SELECT * " +
+                    "FROM cdio1_users LEFT JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
                     "WHERE cdio1_users.userID = ?";
             PreparedStatement queryUser = connection.prepareStatement(query);
             queryUser.setInt(1, userId);
@@ -35,13 +34,10 @@ public class UserDAOimpls185124 implements IUserDAO {
             if (userSet.next()) {
                 List<Boolean> rolesList = new ArrayList<>();
                 Boolean[] rolesArr;
-                try {
-                    for (int i = 7; true; i++) {
-                        rolesList.add(userSet.getBoolean(i));
-                    }
-                } catch (SQLException e) {
-                    System.out.println("last column reached");
+                for (int i = 7; i < 10; i++) {
+                    rolesList.add(userSet.getBoolean(i));
                 }
+
                 rolesArr = rolesList.toArray(new Boolean[1]);
 
                 UserDTO user = new UserDTO(
@@ -67,7 +63,7 @@ public class UserDAOimpls185124 implements IUserDAO {
         try {
             Statement queryUser = connection.createStatement();
             ResultSet userSet = queryUser.executeQuery(
-                        "SELECT *" +
+                    "SELECT *" +
                             "FROM cdio1_users " +
                             "LEFT JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
                             "ORDER BY cdio1_users.userID;");
@@ -77,13 +73,10 @@ public class UserDAOimpls185124 implements IUserDAO {
             while (userSet.next()) {
                 List<Boolean> rolesList = new ArrayList<>();
                 Boolean[] rolesArr;
-                try {
-                    for (int i = 7; true ; i++) {
-                        rolesList.add(userSet.getBoolean(i));
-                    }
-                } catch (SQLException e) {
-                    System.out.println("last column reached");
+                for (int i = 7; i < 10; i++) {
+                    rolesList.add(userSet.getBoolean(i));
                 }
+
                 rolesArr = rolesList.toArray(new Boolean[1]);
 
                 userList.add(new UserDTO(
@@ -129,11 +122,48 @@ public class UserDAOimpls185124 implements IUserDAO {
 
     @Override
     public void updateUser(UserDTO user) throws DALException {
+        try {
+            String query =  "UPDATE cdio1_users " +
+                            "SET  userName = ?, ini = ?, cpr = ?, userPassword = ? " +
+                            "WHERE userID = ?";
+            PreparedStatement prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, user.getUserName());
+            prepStatement.setString(2, user.getIni());
+            prepStatement.setInt(3, user.getCpr());
+            prepStatement.setString(4, user.getPassword());
+            prepStatement.setInt(5, user.getUserId());
+            prepStatement.execute();
 
+
+            String rolesQuery = "UPDATE cdio1_roles " +
+                                "SET administrator = ?, pharmacist = ?, foreman = ?, operator = ? " +
+                                "WHERE userID = ?";
+            PreparedStatement rolesStatement = connection.prepareStatement(rolesQuery);
+            for (int i = 0; i < user.getRoles().length; i++) {
+                rolesStatement.setBoolean(i + 2, user.getRoles()[i]); //+2 because of coversion between index 1/0 and because of first row being ignored
+            }
+            rolesStatement.setInt(1, user.getUserId());
+            rolesStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteUser(int userId) throws DALException {
+        try {
+            String query = "DELETE FROM cdio1_users WHERE userID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.execute();
 
+            String query2 = "DELETE FROM cdio1_users WHERE userID = ?";
+            PreparedStatement statement2 = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.execute();
+
+        } catch (SQLException e) {
+            throw new DALException("An SQLException occurred", e);
+        }
     }
 }
