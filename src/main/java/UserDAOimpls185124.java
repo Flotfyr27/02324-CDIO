@@ -20,24 +20,46 @@ public class UserDAOimpls185124 implements IUserDAO {
         }
     }
 
-
+    //TODO fix this function. doesn't return user
     @Override
     public UserDTO getUser(int userId) throws DALException {
         try {
-            String query =
-                    "SELECT * " +
+            String query = "SELECT *" +
                     "FROM cdio1_users " +
-                    "WHERE userID = ?";
-            PreparedStatement prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, userId);
-            ResultSet resultSet = prepStatement.executeQuery();
+                    "LEFT JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
+                    "WHERE cdio1_users.userID = ?";
+            PreparedStatement queryUser = connection.prepareStatement(query);
+            queryUser.setInt(1, userId);
+            ResultSet userSet = queryUser.executeQuery();
 
-            //UserDTO user = new UserDTO(resultSet.ro);
+            if (userSet.next()) {
+                List<Boolean> rolesList = new ArrayList<>();
+                Boolean[] rolesArr;
+                try {
+                    for (int i = 7; true; i++) {
+                        rolesList.add(userSet.getBoolean(i));
+                    }
+                } catch (SQLException e) {
+                    System.out.println("last column reached");
+                }
+                rolesArr = rolesList.toArray(new Boolean[1]);
+
+                UserDTO user = new UserDTO(
+                        userSet.getInt(1),
+                        userSet.getString(2),
+                        userSet.getString(3),
+                        userSet.getInt(4),
+                        userSet.getString(5),
+                        rolesArr
+                );
+                return user;
+            } else {
+                throw new RuntimeException("No user found");
+            }
 
         } catch (SQLException e) {
             throw new DALException("An SQLException occurred", e);
         }
-        return null;
     }
 
     @Override
@@ -47,7 +69,7 @@ public class UserDAOimpls185124 implements IUserDAO {
             ResultSet userSet = queryUser.executeQuery(
                         "SELECT *" +
                             "FROM cdio1_users " +
-                            "JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
+                            "LEFT JOIN cdio1_roles ON cdio1_users.userID = cdio1_roles.userID " +
                             "ORDER BY cdio1_users.userID;");
 
 
@@ -84,7 +106,7 @@ public class UserDAOimpls185124 implements IUserDAO {
     @Override
     public void createUser(UserDTO user) throws DALException {
         try {
-            String query = "INSERT INTO cdio1_users" + " VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO cdio1_users" + " VALUES (?, ?, ?, ?, ?)";
             PreparedStatement prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, user.getUserId());
             prepStatement.setString(2, user.getUserName());
@@ -95,6 +117,7 @@ public class UserDAOimpls185124 implements IUserDAO {
 
             String rolesQuery = "INSERT INTO cdio1_roles" + " VALUES (?, ?, ?, ?, ?)";
             PreparedStatement rolesStatement = connection.prepareStatement(rolesQuery);
+            rolesStatement.setInt(1, user.getUserId());
             for (int i = 0; i < user.getRoles().length; i++) {
                 rolesStatement.setBoolean(i + 2, user.getRoles()[i]); //+2 because of coversion between index 1/0 and because of first row being ignored
             }
