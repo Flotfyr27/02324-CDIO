@@ -9,7 +9,7 @@ public class test {
     public static void main(String[] args) {
         try {
             UserDAOimpls185124 dao = new UserDAOimpls185124();
-            UserDTO newUser = new UserDTO(3, "SadSmurf", "SS", 1353545430, "qwerty", ERoles.Operator.ordinal());
+            UserDTO newUser = new UserDTO(1, "Superman", "CK", 1353454540, "MaryJane", ERoles.Admin.ordinal());
             dao.createUser(newUser);
             System.out.println("added new user");
 
