@@ -18,6 +18,7 @@ public class test {
 
         } catch (IUserDAO.DALException | SQLException e) {
             e.printStackTrace();
+
         }
     }
 }
