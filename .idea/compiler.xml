@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Aflevering1" />
+        <module name="DTU.semester2.02327.Aflevering1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Aflevering1" target="7" />
+      <module name="DTU.semester2.02327.Aflevering1" target="7" />
     </bytecodeTargetLevel>
   </component>
 </project>

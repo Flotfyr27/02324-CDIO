@@ -42,11 +42,11 @@ public class TUI {
 
                 case 2:
                     System.out.println("Choose the role of the user");
-                    System.out.println("Press 0 for return to main ");
-                    System.out.println("Press 1 for the role Admin");
-                    System.out.println("Press 2 for the role Operator");
-                    System.out.println("Press 3 for the role Foreman");
-                    System.out.println("Press 4 for the role Pharmacist");
+                    System.out.println("Type 0 for return to main ");
+                    System.out.println("Type 1 for the role Admin");
+                    System.out.println("Type 2 for the role Operator");
+                    System.out.println("Type 3 for the role Foreman");
+                    System.out.println("Type 4 for the role Pharmacist");
 
                         int create = scan.nextInt();
                         switch (create) {
@@ -86,11 +86,13 @@ public class TUI {
                     break;
 
                     case 4:
-                    userDAOimpl.getUser(scan.nextInt());
+                        System.out.println("Enter the ID of the user");
+                        userDAOimpl.getUser(scan.nextInt());
                     break;
 
                 case 5:
-                    userDAOimpl.deleteUser(scan.nextInt());
+                    System.out.println("Type the ID you want to delete");
+                   userDAOimpl.deleteUser(scan.nextInt());
                     break;
 
                 default:
