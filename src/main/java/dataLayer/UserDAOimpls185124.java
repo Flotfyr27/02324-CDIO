@@ -1,5 +1,7 @@
-import dal.IUserDAO;
-import dto.UserDTO;
+package dataLayer;
+
+import dataLayer.dal.IUserDAO;
+import TechnicalService.dto.UserDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ public class UserDAOimpls185124 implements IUserDAO {
 
     private Connection connection;
 
-    UserDAOimpls185124 (){
+    public UserDAOimpls185124 (){
         try {
             connection = DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185124?"
                     + "user=s185124&password=B1sEkOxqS0fTXLM2yJDCQ");
@@ -73,11 +75,11 @@ public class UserDAOimpls185124 implements IUserDAO {
             while (userSet.next()) {
                 List<Boolean> rolesList = new ArrayList<>();
                 Boolean[] rolesArr;
-                for (int i = 7; i < 10; i++) {
+                for (int i = 7; i <= 10; i++) {
                     rolesList.add(userSet.getBoolean(i));
                 }
 
-                rolesArr = rolesList.toArray(new Boolean[1]);
+                rolesArr = rolesList.toArray(new Boolean[4]);
 
                 userList.add(new UserDTO(
                         userSet.getInt(1),

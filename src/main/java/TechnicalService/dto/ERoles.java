@@ -1,4 +1,4 @@
-package dto;
+package TechnicalService.dto;
 
 public enum ERoles {
     Admin,

@@ -1,10 +1,6 @@
-package dto;
+package TechnicalService.dto;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class UserDTO implements Serializable{
 
@@ -41,7 +37,7 @@ public class UserDTO implements Serializable{
 
         this.roles = new boolean[4];
         for (int i = 0; i < this.roles.length; i++) {
-            this.roles[i] = false;
+            this.roles[i] = roles[i];
         }
     }
 
@@ -95,7 +91,7 @@ public class UserDTO implements Serializable{
 
     @Override
     public String toString() {
-        return "dto.UserDTO [userId=" + userId + ", userName=" + userName + ", ini=" + ini + ", roles=" + rolesToString() + "]";
+        return "UserDTO [userId=" + userId + ", userName=" + userName + ", ini=" + ini + ", roles=" + rolesToString() + "]";
     }
 
     private String rolesToString () {
