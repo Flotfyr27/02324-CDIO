@@ -156,7 +156,6 @@ public class UserDAOimpls185124 implements IUserDAO {
     @Override
     public void deleteUser(int userId) throws DALException {
         try {
-            System.out.println("Enter the ID of the user you want to delete");
             String query = "DELETE FROM cdio1_users WHERE userID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);

@@ -47,37 +47,10 @@ public class TUI {
                     System.out.println("Type 2 for the role Operator");
                     System.out.println("Type 3 for the role Foreman");
                     System.out.println("Type 4 for the role Pharmacist");
-
-                        int create = scan.nextInt();
-                        switch (create) {
-
-                            case 0:
-                            break;
-
-                            case 1:
-                                System.out.println("To create a new user enter the  the following separated by space: \nID, Name, Ini, Cpr, and Password");
-                                UserDTO userDTO1 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Admin);
-                                userDAOimpl.createUser(userDTO1);
-                            break;
-                            case 2:
-                                System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and Password");
-                                UserDTO userDTO2 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Operator);
-                                userDAOimpl.createUser(userDTO2);
-                            break;
-                            case 3:
-                                System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and  Password");
-                                UserDTO userDTO3 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Foreman);
-                                userDAOimpl.createUser(userDTO3);
-                            break;
-                            case 4:
-                                System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
-                                UserDTO userDTO4 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Pharmacist);
-                                userDAOimpl.createUser(userDTO4);
-                            break;
-                            default:
-                                System.out.println("Not a valid number");
-                                break;
-                        }
+                    System.out.println("Type 5 for no role");
+                    int create = scan.nextInt();
+                    runCreateUser(create);
+                    break;
 
                    case 3: //TODO finish update
 
@@ -103,9 +76,80 @@ public class TUI {
 
             }
         }
+    } /*
+private void runCreateUser(int create) throws IUserDAO.DALException {
+
+
+    switch (create) {
+
+        case 0:
+            System.out.println("Back to Main menu:");
+            break;
+
+        case 1:
+            System.out.println("To create a new user enter the  the following separated by space: \nID, Name, Ini, Cpr, and Password");
+            UserDTO userDTO1 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Admin);
+            userDAOimpl.createUser(userDTO1);
+            break;
+        case 2:
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and Password");
+            UserDTO userDTO2 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Operator);
+            userDAOimpl.createUser(userDTO2);
+            break;
+        case 3:
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and  Password");
+            UserDTO userDTO3 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Foreman);
+            userDAOimpl.createUser(userDTO3);
+            break;
+        case 4:
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
+            UserDTO userDTO4 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Pharmacist);
+            userDAOimpl.createUser(userDTO4);
+            break;
+        case 5:
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
+            UserDTO userDTO5 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), false);
+            userDAOimpl.createUser(userDTO5);
+            break;
+        default:
+            System.out.println("Not a valid number");
+            break;
+    } */
+
+    private void runCreateUser(int create) throws IUserDAO.DALException {
+
+
+        if (create == 0) {
+            System.out.println("Back to Main menu:");
+        }
+
+        if (create == 1) {
+            System.out.println("To create a new user enter the  the following separated by space: \nID, Name, Ini, Cpr, and Password");
+            UserDTO userDTO1 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Admin);
+            userDAOimpl.createUser(userDTO1);
+        }
+        if (create == 2) {
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and Password");
+            UserDTO userDTO2 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Operator);
+            userDAOimpl.createUser(userDTO2);
+        }
+        if (create == 3) {
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and  Password");
+            UserDTO userDTO3 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Foreman);
+            userDAOimpl.createUser(userDTO3);
+        }
+        if (create == 4) {
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
+            UserDTO userDTO4 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Pharmacist);
+            userDAOimpl.createUser(userDTO4);
+        }
+        if (create == 5) {
+            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
+            UserDTO userDTO5 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), false);
+            userDAOimpl.createUser(userDTO5);
+        } else
+            System.out.println("Not a valid number");
     }
-
-
 
     }
 
