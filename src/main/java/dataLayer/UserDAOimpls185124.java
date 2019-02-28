@@ -20,7 +20,6 @@ public class UserDAOimpls185124 implements IUserDAO {
             System.out.println("Couldn't connect to database");
             e.printStackTrace();
         }
-
     }
 
 
@@ -161,8 +160,6 @@ public class UserDAOimpls185124 implements IUserDAO {
             PreparedStatement statement2 = connection.prepareStatement(query2);
             statement2.setInt(1, userId);
             statement2.execute();
-
-            System.out.println("Enter the ID of the user you want to delete");
             String query = "DELETE FROM cdio1_users WHERE userID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);

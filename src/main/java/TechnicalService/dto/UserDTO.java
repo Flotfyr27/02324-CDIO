@@ -91,7 +91,7 @@ public class UserDTO implements Serializable{
 
     @Override
     public String toString() {
-        return "UserDTO [userId=" + userId + ", userName=" + userName + ", ini=" + ini + ", roles=" + rolesToString() + "]";
+        return "UserDTO [userId: " + userId + ", userName: " + userName + ", ini: " + ini + ", roles: " + rolesToString() + "]";
     }
 
     private String rolesToString () {
