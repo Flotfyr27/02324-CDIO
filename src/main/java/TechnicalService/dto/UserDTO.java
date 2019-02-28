@@ -12,7 +12,7 @@ public class UserDTO implements Serializable{
     private int cpr;
     private String password;
 
-    public UserDTO(int id, String userName, String ini, int cpr, String password, int ... roles) {
+    public UserDTO(int id, String userName, String ini, int cpr, String password, ERoles ... roles) {
         userId = id;
         this.userName = userName;
         this.ini = ini;
@@ -24,7 +24,7 @@ public class UserDTO implements Serializable{
             this.roles[i] = false;
         }
         for (int i = 0; i < roles.length; i++) {
-            this.roles[roles[i]] = true;
+            this.roles[roles[i].ordinal()] = true;
         }
     }
 

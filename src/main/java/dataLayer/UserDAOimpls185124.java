@@ -20,7 +20,9 @@ public class UserDAOimpls185124 implements IUserDAO {
             System.out.println("Couldn't connect to database");
             e.printStackTrace();
         }
+
     }
+
 
     //TODO fix this function. doesn't return user
     @Override
@@ -36,7 +38,7 @@ public class UserDAOimpls185124 implements IUserDAO {
             if (userSet.next()) {
                 List<Boolean> rolesList = new ArrayList<>();
                 Boolean[] rolesArr;
-                for (int i = 7; i < 10; i++) {
+                for (int i = 7; i <= 10; i++) {
                     rolesList.add(userSet.getBoolean(i));
                 }
 
@@ -50,6 +52,7 @@ public class UserDAOimpls185124 implements IUserDAO {
                         userSet.getString(5),
                         rolesArr
                 );
+                userSet.close();
                 return user;
             } else {
                 throw new RuntimeException("No user found");
@@ -154,15 +157,18 @@ public class UserDAOimpls185124 implements IUserDAO {
     @Override
     public void deleteUser(int userId) throws DALException {
         try {
+            String query2 = "DELETE FROM cdio1_roles WHERE userID = ?";
+            PreparedStatement statement2 = connection.prepareStatement(query2);
+            statement2.setInt(1, userId);
+            statement2.execute();
+
+            System.out.println("Enter the ID of the user you want to delete");
             String query = "DELETE FROM cdio1_users WHERE userID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.execute();
 
-            String query2 = "DELETE FROM cdio1_users WHERE userID = ?";
-            PreparedStatement statement2 = connection.prepareStatement(query);
-            statement.setInt(1, userId);
-            statement.execute();
+
 
         } catch (SQLException e) {
             throw new DALException("An SQLException occurred", e);

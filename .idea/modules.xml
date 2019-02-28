@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Aflevering1.iml" filepath="$PROJECT_DIR$/Aflevering1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/02324-CDIOx.iml" filepath="$PROJECT_DIR$/.idea/02324-CDIOx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DTU.semester2.02327.Aflevering1.iml" filepath="$PROJECT_DIR$/DTU.semester2.02327.Aflevering1.iml" />
     </modules>
   </component>
 </project>

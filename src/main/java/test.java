@@ -1,29 +1,23 @@
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
+import UI.TUI.TUI;
 import dataLayer.dal.IUserDAO;
 import dataLayer.UserDAOimpls185124;
 import TechnicalService.dto.ERoles;
 import TechnicalService.dto.UserDTO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class test {
     public static void main(String[] args) {
-        /*try {
+        try {
             UserDAOimpls185124 dao = new UserDAOimpls185124();
+            TUI tui = new TUI();
 
-            List<UserDTO> list = dao.getUserList();
-            System.out.println("User list:");
-            for (UserDTO user : list) {
-                System.out.println(user);
-            }
+           tui.runCase();
 
-        } catch (IUserDAO.DALException e) {
+
+        } catch (IUserDAO.DALException | SQLException e) {
             e.printStackTrace();
-        }*/
-
-        if ("tlmm9ll".matches("(0123456789)")) { //[.-_+!?=]
-            System.out.println("true");
-        } else
-            System.out.println("false");
+        }
     }
 }
