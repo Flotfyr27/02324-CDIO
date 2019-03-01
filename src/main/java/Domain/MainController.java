@@ -89,9 +89,24 @@ public class MainController implements IUserDAO {
             }
         }
 
-        if (password.matches(".*[._+!?=-]*.")) {
-            categoryCount++;
+        for (int i = 0; i < password.length(); i++) {
+            if (
+                    password.indexOf('.') >= 0 ||
+                    password.indexOf('_') >= 0 ||
+                    password.indexOf('+') >= 0 ||
+                    password.indexOf('!') >= 0 ||
+                    password.indexOf('?') >= 0 ||
+                    password.indexOf('=') >= 0 ||
+                    password.indexOf('-') >= 0
+            ) {
+                categoryCount++;
+                break;
+            }
         }
+
+        if (categoryCount < 3)
+            return false;
+
         return true;
     }
 }
