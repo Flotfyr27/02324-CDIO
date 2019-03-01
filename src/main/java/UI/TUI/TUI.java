@@ -1,20 +1,23 @@
 package UI.TUI;
-import Domain.MainController;
+
 import TechnicalService.dto.ERoles;
 import TechnicalService.dto.UserDTO;
 import dataLayer.dal.IUserDAO;
 
-import javax.management.relation.RoleStatus;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class TUI {
-    Scanner scan = new Scanner(System.in);
-    IUserDAO dataAccess = new MainController();
+    IUserDAO dataAccess;
+
+    public TUI (IUserDAO dataAccess) {
+        this.dataAccess = dataAccess;
+    }
 
 
     public void runCase() throws IUserDAO.DALException, SQLException {
+        Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.println("\n Choose auction");
             System.out.println("Press 0 to close to program");
@@ -27,6 +30,7 @@ public class TUI {
             switch (scan.nextInt()) {
                 case 0:
                     System.out.println("See you next time");
+                    scan.close();
                     System.exit(0);
                     break;
 
@@ -42,15 +46,7 @@ public class TUI {
                     createUser();
                 break;
                 case 3: //TODO finish update
-                    System.out.println("Choose the role of the person");
-                    System.out.println("Type 0 for return to main ");
-                    System.out.println("Type 1 for the role Admin");
-                    System.out.println("Type 2 for the role Operator");
-                    System.out.println("Type 3 for the role Foreman");
-                    System.out.println("Type 4 for the role Pharmacist");
-                    System.out.println("Type 5 if user has no role");
-                    int update = scan.nextInt();
-                    runUpdateUser(update);
+                    runUpdateUser();
 
                     break;
 
@@ -70,9 +66,11 @@ public class TUI {
         }
     }
 
-    private void createUser() throws IUserDAO.DALException {
+    private void createUser() {
+        Scanner scanInt = new Scanner(System.in);
+        Scanner scanStr = new Scanner(System.in);
         System.out.println("To create a new user enter the  the following separated by space: \nID, Name, Initials, Cpr, and Password");
-        UserDTO userDTO1 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next());
+        UserDTO userDTO1 = new UserDTO(scanInt.nextInt(), scanStr.next(), scanStr.next(), scanInt.nextInt(), scanStr.next());
 
         System.out.println(
                 "Enter the roles of the new user separated by spaces" +
@@ -83,52 +81,106 @@ public class TUI {
                 "\n\t4\t" + ERoles.Operator.name()
         );
 
-        Scanner scan = new Scanner(System.in);
+        int input;
+        boolean[] roles = new boolean[4];
+        fillRolesArray(scanInt, roles);
+
+        try {
+            dataAccess.createUser(userDTO1);
+        } catch (IUserDAO.DALException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Try again");
+        }
+        System.out.println("The user has been created");
+        scanInt.close();
+        scanStr.close();
+    }
+
+    private void runUpdateUser() throws IUserDAO.DALException {
+        Scanner scanInt = new Scanner(System.in);
+        Scanner scanStr = new Scanner(System.in);
+
+        System.out.print("Enter the ID of the user you wish to update");
+        UserDTO userUpdate = new UserDTO(scanInt.nextInt(), null, null, -1, null); //creates a user containing no values to be updated yet
+
+        System.out.print("Enter the things you want to update followed by the new value" +
+                "\n\t0\tCommit changes" +
+                "\n\t1\tName" +
+                "\n\t2\tInitials" +
+                "\n\t3\tcpr" +
+                "\n\t4\tPassword" +
+                "\n\t5\tRoles");
+
+        int selection;
+        do {
+            selection = scanInt.nextInt();
+
+            switch (selection) {
+                case 0:
+                    break;
+                case 1:
+                    userUpdate.setUserName(scanStr.next());
+                    break;
+                case 2:
+                    userUpdate.setIni(scanStr.next());
+                    break;
+                case 3:
+                    userUpdate.setCpr(scanInt.nextInt());
+                    break;
+                case 4:
+                    userUpdate.setPassword(scanStr.next());
+                    break;
+                case 5:
+                    System.out.println("Enter all roles the user should have (also the ones they already have)" +
+                            "\n\t0\tEnd list of roles" +
+                            "\n\t1\t" + ERoles.Admin.name() +
+                            "\n\t2\t" + ERoles.Pharmacist.name() +
+                            "\n\t3\t" + ERoles.Foreman.name() +
+                            "\n\t4\t" + ERoles.Operator.name()
+                    );
+                    boolean[] roles = new boolean[4];
+                    fillRolesArray(scanInt, roles);
+                    userUpdate.setRoles(roles);
+                    break;
+                default:
+                    System.out.println("Please enter a valid option");
+
+            }
+        } while (selection != 0);
+
+        dataAccess.updateUser(userUpdate);
+        System.out.println("The user has been updated");
+
+    }
+
+    private void fillRolesArray(Scanner scanInt, boolean[] roles) {
         int input;
         do {
-            input = scan.nextInt();
-            boolean[] roles = new boolean[4];
+            input = scanInt.nextInt();
             switch (input) {
+                case 0:
+                    break;
                 case 1:
                     roles[ERoles.Admin.ordinal()] = true;
+                    break;
+                case 2:
+                    roles[ERoles.Pharmacist.ordinal()] = true;
+                    break;
+                case 3:
+                    roles[ERoles.Foreman.ordinal()] = true;
+                    break;
+                case 4:
+                    roles[ERoles.Operator.ordinal()] = true;
+                    break;
+                default:
+                    System.out.println("Please enter a valid option");
+
             }
         } while (input != 0);
-
-        dataAccess.createUser(userDTO1);
-        System.out.println("The user has been created");
     }
 
-    private void runUpdateUser(int update) throws IUserDAO.DALException {
-        if (update == 1) {
-            System.out.println("To update the  user enter the  the following separated by space: \nID, Name, Ini, Cpr, and Password");
-            UserDTO userDTO1 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Admin);
-            dataAccess.updateUser(userDTO1);
-            System.out.println("The user has been updated");
-        } if (update == 2) {
-            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and Password");
-            UserDTO userDTO2 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Operator);
-            dataAccess.updateUser(userDTO2);
-            System.out.println("The user has been updated");
-        } if (update == 3) {
-            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR and  Password");
-            UserDTO userDTO3 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Foreman);
-            dataAccess.updateUser(userDTO3);
-            System.out.println("The user has been updated");
-        } if (update == 4) {
-            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
-            UserDTO userDTO4 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), ERoles.Pharmacist);
-            dataAccess.updateUser(userDTO4);
-            System.out.println("The user has been updated");
-        }  if (update == 5) {
-            System.out.println("Type the following separated by space : \nID, Name, Ini, CPR, and Password");
-            UserDTO userDTO5 = new UserDTO(scan.nextInt(), scan.next(), scan.next(), scan.nextInt(), scan.next(), false);
-            dataAccess.updateUser(userDTO5);
-            System.out.println("The user has been updated");
-        } else if (update<0 || update>5)
-            System.out.println("Not a valid number");
-
-    }
     private void regretDelete() throws IUserDAO.DALException {
+        Scanner scan = new Scanner(System.in);
         System.out.println("Type 1 if you sure you want to delete a user\nType 2 for returning to main menu ");
         int delete = scan.nextInt();
         if (delete == 1) {

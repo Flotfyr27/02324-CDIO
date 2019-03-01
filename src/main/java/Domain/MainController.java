@@ -31,7 +31,7 @@ public class MainController implements IUserDAO {
     @Override
     public void createUser(UserDTO user) throws DALException {
         if ( checkIni(user.getIni()) )
-            throw new DALException("Initials don't live up to security standards");
+            throw new DALException("Initials don't fall within constraints");
         if ( checkPassword( user.getPassword() ) )
             throw new DALException("Password doesn't live up to security standards");
         dataAcces.createUser(user);
