@@ -19,13 +19,13 @@ public class TUI {
     public void runCase() throws IUserDAO.DALException, SQLException {
         Scanner scan = new Scanner(System.in);
         while (true) {
-            System.out.println("\n Choose auction");
-            System.out.println("Press 0 to close to program");
-            System.out.println("Press 1 to see the user list");
-            System.out.println("Press 2 to add a user");
-            System.out.println("Press 3 to update the user list");
-            System.out.println("Press 4 to find a specific user");
-            System.out.println("Press 5 to delete a user");
+            System.out.println("\nChoose action");
+            System.out.println("\t0\tclose to program");
+            System.out.println("\t1\tsee the user list");
+            System.out.println("\t2\tadd a user");
+            System.out.println("\t3\tupdate the user list");
+            System.out.println("\t4\tfind a specific user");
+            System.out.println("\t5\tdelete a user");
 
             switch (scan.nextInt()) {
                 case 0:
@@ -47,7 +47,6 @@ public class TUI {
                 break;
                 case 3:
                     updateUser();
-
                     break;
 
                 case 4:
@@ -69,8 +68,15 @@ public class TUI {
     private void createUser() {
         Scanner scanInt = new Scanner(System.in);
         Scanner scanStr = new Scanner(System.in);
-        System.out.println("To create a new user enter the  the following separated by space: \nID, Name, Initials, Cpr, and Password");
-        UserDTO userDTO1 = new UserDTO(scanInt.nextInt(), scanStr.next(), scanStr.next(), scanInt.nextInt(), scanStr.next());
+        System.out.println("To create a new user enter the the following each on their own line: \nID, Name, Initials, Cpr, and Password");
+
+        int id = scanInt.nextInt();
+        String name = scanStr.next();
+        String ini = scanStr.next();
+        int cpr = scanInt.nextInt();
+        String password = scanStr.next();
+
+        UserDTO userDTO1 = new UserDTO(id, name, ini, cpr, password);
 
         System.out.println(
                 "Enter the roles of the new user separated by spaces" +
@@ -83,16 +89,16 @@ public class TUI {
 
         boolean[] roles = new boolean[4];
         fillRolesArray(scanInt, roles);
+        userDTO1.setRoles(roles);
 
         try {
             dataAccess.createUser(userDTO1);
+            System.out.println("The user has been created");
         } catch (IUserDAO.DALException e) {
             System.out.println(e.getMessage());
             System.out.println("Try again");
         }
-        System.out.println("The user has been created");
-        scanInt.close();
-        scanStr.close();
+
     }
 
     private void updateUser() throws IUserDAO.DALException {
@@ -102,7 +108,7 @@ public class TUI {
         System.out.print("Enter the ID of the user you wish to update");
         UserDTO userUpdate = new UserDTO(scanInt.nextInt(), null, null, -1, null); //creates a user containing no values to be updated yet
 
-        System.out.print("Enter the things you want to update followed by the new value" +
+        System.out.println("Enter the things you want to update followed by the new value" +
                 "\n\t0\tCommit changes" +
                 "\n\t1\tName" +
                 "\n\t2\tInitials" +
@@ -194,7 +200,7 @@ public class TUI {
             selection = scan.nextInt();
             switch (selection) {
                 case 1:
-                    dataAccess.deleteUser(scan.nextInt());
+                    dataAccess.deleteUser(selectedUser);
                     System.out.println("The user has been deleted");
                     break;
                 case 2:

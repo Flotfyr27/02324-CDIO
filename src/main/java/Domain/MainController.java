@@ -30,9 +30,9 @@ public class MainController implements IUserDAO {
     //-- Methods with extra Checks --//
     @Override
     public void createUser(UserDTO user) throws DALException {
-        if ( checkIni(user.getIni()) )
+        if (! checkIni(user.getIni()) )
             throw new DALException("Initials don't fall within constraints");
-        if ( checkPassword( user.getPassword() ) )
+        if (! checkPassword( user.getPassword() ) )
             throw new DALException("Password doesn't live up to security standards");
         dataAcces.createUser(user);
 
@@ -80,8 +80,6 @@ public class MainController implements IUserDAO {
      */
     private boolean checkIni(String ini) {
         if (! (ini.length() >= 2 && ini.length() <= 4) )
-            return false;
-        if (! ini.matches("[a-åA-å]"))
             return false;
 
         return true;
