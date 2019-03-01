@@ -1,13 +1,13 @@
 package Domain;
 
 import TechnicalService.dto.UserDTO;
-import dataLayer.UserDAOimpls185124;
+import dataLayer.DataAccess;
 import dataLayer.dal.IUserDAO;
 
 import java.util.List;
 
 public class MainController implements IUserDAO {
-    private IUserDAO dataAcces = new UserDAOimpls185124();
+    private IUserDAO dataAcces = new DataAccess();
 
 
     //-- Methods with no Checks --//

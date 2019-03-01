@@ -7,11 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOimpls185124 implements IUserDAO {
+public class DataAccess implements IUserDAO {
 
     private Connection connection;
 
-    public UserDAOimpls185124 (){
+    public DataAccess(){
         try {
             connection = DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185124?"
                     + "user=s185124&password=B1sEkOxqS0fTXLM2yJDCQ");
