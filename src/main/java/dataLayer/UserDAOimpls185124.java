@@ -171,4 +171,5 @@ public class UserDAOimpls185124 implements IUserDAO {
             throw new DALException("An SQLException occurred", e);
         }
     }
+
 }

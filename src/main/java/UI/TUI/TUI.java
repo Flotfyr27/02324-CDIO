@@ -45,8 +45,8 @@ public class TUI {
                 case 2:
                     createUser();
                 break;
-                case 3: //TODO finish update
-                    runUpdateUser();
+                case 3:
+                    updateUser();
 
                     break;
 
@@ -81,7 +81,6 @@ public class TUI {
                 "\n\t4\t" + ERoles.Operator.name()
         );
 
-        int input;
         boolean[] roles = new boolean[4];
         fillRolesArray(scanInt, roles);
 
@@ -96,7 +95,7 @@ public class TUI {
         scanStr.close();
     }
 
-    private void runUpdateUser() throws IUserDAO.DALException {
+    private void updateUser() throws IUserDAO.DALException {
         Scanner scanInt = new Scanner(System.in);
         Scanner scanStr = new Scanner(System.in);
 
