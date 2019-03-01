@@ -12,6 +12,16 @@ public class UserDTO implements Serializable{
     private int cpr;
     private String password;
 
+    public UserDTO(int id, String userName, String ini, int cpr, String password) {
+        userId = id;
+        this.userName = userName;
+        this.ini = ini;
+        this.cpr = cpr;
+        this.password = password;
+
+        roles = null;
+    }
+
     public UserDTO(int id, String userName, String ini, int cpr, String password, ERoles ... roles) {
         userId = id;
         this.userName = userName;

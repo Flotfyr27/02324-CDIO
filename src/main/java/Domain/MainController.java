@@ -21,12 +21,20 @@ public class MainController implements IUserDAO {
         return dataAcces.getUserList();
     }
 
+    @Override
+    public void deleteUser(int userId) throws DALException {
+        dataAcces.deleteUser(userId);
+    }
+
 
     //-- Methods with extra Checks --//
     @Override
     public void createUser(UserDTO user) throws DALException {
+        if ( checkIni(user.getIni()) )
+            throw new DALException("Initials don't live up to security standards");
         if ( checkPassword( user.getPassword() ) )
             throw new DALException("Password doesn't live up to security standards");
+        dataAcces.createUser(user);
 
     }
 
@@ -36,22 +44,40 @@ public class MainController implements IUserDAO {
     public void updateUser(UserDTO user) throws DALException {
         UserDTO userAsIs = dataAcces.getUser(user.getUserId());
 
+        //check all variables, for whether or not they are updated and live up to the requirements
         if (user.getUserName() == null)
             user.setUserName(userAsIs.getUserName());
+
         if (user.getIni() == null)
             user.setIni(userAsIs.getIni());
-        else {
-            if (! checkIni(user.getIni()))
-                throw new DALException ("Invalid initials");
-        }
+        else
+            if (!checkIni(user.getIni()))
+                throw new DALException("Invalid initials");
+
+        if (user.getCpr() == -1)
+            user.setCpr(userAsIs.getCpr());
+
+        if (user.getPassword() == null)
+            user.setPassword(userAsIs.getPassword());
+        else if (!checkPassword(user.getPassword()))
+            throw new DALException("Invalid password");
+
+        if (user.getRoles() == null)
+            user.setRoles(userAsIs.getRoles());
+
+
+        dataAcces.updateUser(user);
     }
 
-    @Override
-    public void deleteUser(int userId) throws DALException {
-
-    }
 
 
+
+
+    /**
+     * Checks if the initials live up to the requirements
+     * @param ini The initials to check
+     * @return true if all requirements are met, false otherwise
+     */
     private boolean checkIni(String ini) {
         if (! (ini.length() >= 2 && ini.length() <= 4) )
             return false;
@@ -62,6 +88,11 @@ public class MainController implements IUserDAO {
     }
 
 
+    /**
+     * Checks if the given password lives up to the requirements
+     * @param password The user-chosen password
+     * @return true if all requirements are met, false otherwise
+     */
     private boolean checkPassword(String password) {
         if (password.length() < 6 || password.length() > 50)
             return false;
