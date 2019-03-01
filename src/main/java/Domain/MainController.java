@@ -30,6 +30,38 @@ public class MainController implements IUserDAO {
 
     }
 
+
+
+    @Override
+    public void updateUser(UserDTO user) throws DALException {
+        UserDTO userAsIs = dataAcces.getUser(user.getUserId());
+
+        if (user.getUserName() == null)
+            user.setUserName(userAsIs.getUserName());
+        if (user.getIni() == null)
+            user.setIni(userAsIs.getIni());
+        else {
+            if (! checkIni(user.getIni()))
+                throw new DALException ("Invalid initials");
+        }
+    }
+
+    @Override
+    public void deleteUser(int userId) throws DALException {
+
+    }
+
+
+    private boolean checkIni(String ini) {
+        if (! (ini.length() >= 2 && ini.length() <= 4) )
+            return false;
+        if (! ini.matches("[a-åA-å]"))
+            return false;
+
+        return true;
+    }
+
+
     private boolean checkPassword(String password) {
         if (password.length() < 6 || password.length() > 50)
             return false;
@@ -57,19 +89,9 @@ public class MainController implements IUserDAO {
             }
         }
 
-        if (password.matches(".*[.-_+!?=]*.")) {
+        if (password.matches(".*[._+!?=-]*.")) {
             categoryCount++;
         }
         return true;
-    }
-
-    @Override
-    public void updateUser(UserDTO user) throws DALException {
-
-    }
-
-    @Override
-    public void deleteUser(int userId) throws DALException {
-
     }
 }
