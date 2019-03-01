@@ -56,7 +56,7 @@ public class TUI {
                     break;
 
                 case 5:
-                    regretDelete();
+                    delete();
                     break;
                 default:
                     System.out.println("Please enter a valid number");
@@ -179,18 +179,33 @@ public class TUI {
         } while (input != 0);
     }
 
-    private void regretDelete() throws IUserDAO.DALException {
+    private void delete() throws IUserDAO.DALException {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Type 1 if you sure you want to delete a user\nType 2 for returning to main menu ");
-        int delete = scan.nextInt();
-        if (delete == 1) {
-            System.out.println("Enter the ID of the user you want to delete");
-            dataAccess.deleteUser(scan.nextInt());
-            System.out.println("The user has been deleted");
-        }
-        if (delete == 2) {
 
-        }
+        System.out.println("Enter the ID of the user you want to delete");
+        int selectedUser = scan.nextInt();
+
+        System.out.println("Are you sure you want to delete the user:\n" +
+                dataAccess.getUser(selectedUser));
+        System.out.println("Delete user?" +
+                "\n\t1\tDelete" +
+                "\n\t2\tCancel");
+        int selection;
+        do {
+            selection = scan.nextInt();
+            switch (selection) {
+                case 1:
+                    dataAccess.deleteUser(scan.nextInt());
+                    System.out.println("The user has been deleted");
+                    break;
+                case 2:
+                    System.out.println("Deletion canceled");
+                    break;
+                default:
+                    System.out.println("Please enter a valid option");
+            }
+        } while (selection != 1 && selection != 2);
+
     }
 
 }
