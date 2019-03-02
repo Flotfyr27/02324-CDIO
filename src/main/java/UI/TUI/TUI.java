@@ -20,42 +20,38 @@ public class TUI {
         Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.println("\nChoose action");
-            System.out.println("\t0\tclose to program");
-            System.out.println("\t1\tsee the user list");
-            System.out.println("\t2\tadd a user");
-            System.out.println("\t3\tupdate the user list");
-            System.out.println("\t4\tfind a specific user");
+            System.out.println("\t1\tadd a user");
+            System.out.println("\t2\tfind a specific user");
+            System.out.println("\t3\tsee the user list");
+            System.out.println("\t4\tupdate the user list");
             System.out.println("\t5\tdelete a user");
+            System.out.println("\t6\tclose to program");
 
             switch (scan.nextInt()) {
-                case 0:
-                    System.out.println("See you next time");
-                    scan.close();
-                    System.exit(0);
-                    break;
-
                 case 1:
+                    createUser();
+                    break;
+                case 2:
+                    System.out.println("Enter the ID of the user");
+                    System.out.println(dataAccess.getUser(scan.nextInt()));
+                    break;
+                case 3:
                     List<UserDTO> list = dataAccess.getUserList();
                     System.out.println("User list:");
                     for (UserDTO user : list) {
                         System.out.println(user);
                     }
                     break;
-
-                case 2:
-                    createUser();
-                break;
-                case 3:
+                case 4:
                     updateUser();
                     break;
-
-                case 4:
-                    System.out.println("Enter the ID of the user");
-                    System.out.println(dataAccess.getUser(scan.nextInt()));
-                    break;
-
                 case 5:
                     delete();
+                    break;
+                case 6:
+                    System.out.println("See you next time");
+                    scan.close();
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Please enter a valid number");
